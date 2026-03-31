@@ -1,6 +1,7 @@
 export interface PolarisConfig {
   baseUrl: string;
   apiToken: string;
+  verbose?: boolean;
 }
 
 export function loadConfig(): PolarisConfig {
@@ -24,5 +25,6 @@ export function loadConfig(): PolarisConfig {
   return {
     baseUrl: baseUrl.replace(/\/+$/, ""),
     apiToken,
+    verbose: process.env.POLARIS_VERBOSE === "true",
   };
 }

@@ -6,7 +6,7 @@ import { registerAllTools } from "./tools/index.js";
 export function createServer(config: PolarisConfig): McpServer {
   const server = new McpServer({
     name: "blackduck-polaris-mcp-server",
-    version: "0.3.0",
+    version: "0.3.1",
   });
 
   const client = new PolarisClient(config);

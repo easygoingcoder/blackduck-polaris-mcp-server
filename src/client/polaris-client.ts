@@ -4,10 +4,29 @@ import { PolarisApiError, RequestOptions, PaginatedResponse } from "./types.js";
 export class PolarisClient {
   private baseUrl: string;
   private token: string;
+  public verbose: boolean;
 
   constructor(config: PolarisConfig) {
     this.baseUrl = config.baseUrl;
     this.token = config.apiToken;
+    this.verbose = config.verbose ?? false;
+  }
+
+  trimResponse<T>(data: T): T {
+    if (this.verbose) return data;
+    if (Array.isArray(data)) return data.map((item) => this.trimResponse(item)) as T;
+    if (data && typeof data === "object") {
+      const obj = data as Record<string, unknown>;
+      const trimmed: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (key === "_links" || key === "_cursor" || key === "_type") continue;
+        if (key === "_collection") continue;
+        if (key === "configuration" && typeof value === "string") continue;
+        trimmed[key] = value && typeof value === "object" ? this.trimResponse(value) : value;
+      }
+      return trimmed as T;
+    }
+    return data;
   }
 
   async request<T>(method: string, path: string, options?: RequestOptions): Promise<T> {
@@ -49,7 +68,8 @@ export class PolarisClient {
 
     const contentType = response.headers.get("content-type") || "";
     if (contentType.includes("json")) {
-      return (await response.json()) as T;
+      const json = await response.json();
+      return this.trimResponse(json) as T;
     }
 
     return (await response.text()) as T;
