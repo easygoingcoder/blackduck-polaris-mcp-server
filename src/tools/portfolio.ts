@@ -124,6 +124,21 @@ export function registerPortfolioTools(server: McpServer, client: PolarisClient)
   );
 
   server.tool(
+    "polaris_list_entitlements",
+    "List entitlements (SAST/SCA/DAST) for an application — needed to get entitlementIds before triggering scans with polaris_trigger_scan",
+    {
+      portfolioId: z.string().describe("Portfolio ID"),
+      applicationId: z.string().describe("Application ID"),
+    },
+    async (params) => {
+      const result = await client.get(
+        `/api/portfolios/${params.portfolioId}/applications/${params.applicationId}/entitlements`
+      );
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    }
+  );
+
+  server.tool(
     "polaris_list_branches",
     "List branches within a project",
     {

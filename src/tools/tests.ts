@@ -5,17 +5,25 @@ import { PolarisClient } from "../client/polaris-client.js";
 export function registerTestsTools(server: McpServer, client: PolarisClient): void {
   server.tool(
     "polaris_trigger_scan",
-    "Trigger a SAST, SCA, DAST, or EXTERNAL_ANALYSIS scan on a specific branch. Returns immediately with test ID — use polaris_get_test to poll status",
+    "Trigger SAST/SCA/DAST scans on a branch. Requires applicationId and entitlementIds (get them from polaris_list_entitlements). Returns test IDs — use polaris_get_test to poll status",
     {
+      applicationId: z.string().describe("Application ID"),
       projectId: z.string().describe("Project ID to scan"),
       branchId: z.string().describe("Branch ID to scan"),
-      scanTypes: z.array(z.enum(["SAST", "SCA", "DAST", "EXTERNAL_ANALYSIS"])).describe("Types of scan to run"),
+      entitlementIds: z.array(z.string()).describe("Entitlement IDs for the scan types (from polaris_list_entitlements)"),
+      assessmentTypes: z.array(z.enum(["SAST", "SCA", "DAST", "EXTERNAL_ANALYSIS"])).describe("Types of scan to run"),
+      triage: z.enum(["NOT_REQUIRED", "REQUIRED", "NOT_ENTITLED"]).optional().describe("Triage mode (default NOT_REQUIRED)"),
     },
     async (params) => {
-      const result = await client.post("/api/tests", {
-        projectId: params.projectId,
-        branchId: params.branchId,
-        scanTypes: params.scanTypes,
+      const result = await client.request("POST", "/api/tests", {
+        body: {
+          applicationId: params.applicationId,
+          projectId: params.projectId,
+          branchId: params.branchId,
+          entitlementIds: params.entitlementIds,
+          assessmentTypes: params.assessmentTypes,
+          triage: params.triage ?? "NOT_REQUIRED",
+        },
       });
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }

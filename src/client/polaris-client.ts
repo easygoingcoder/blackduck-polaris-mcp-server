@@ -29,7 +29,7 @@ export class PolarisClient {
     };
 
     if (options?.body) {
-      headers["Content-Type"] = "application/json";
+      headers["Content-Type"] = options?.headers?.["Content-Type"] || this.getContentTypeHeader(path, method);
     }
 
     const response = await fetch(url.toString(), {
@@ -53,6 +53,13 @@ export class PolarisClient {
     }
 
     return (await response.text()) as T;
+  }
+
+  private getContentTypeHeader(path: string, method: string): string {
+    if (method === "POST" && path === "/api/tests") {
+      return "application/vnd.polaris.tests.tests-bulk-create-1+json";
+    }
+    return "application/json";
   }
 
   private getAcceptHeader(path: string): string {
@@ -109,7 +116,7 @@ export class PolarisClient {
       return {
         data: response._items || [],
         meta: {
-          total: response._collection?._meta?.totalCount ?? response._items?.length ?? 0,
+          total: response._collection?.itemCount ?? response._items?.length ?? 0,
           limit: Number(query?._limit ?? 25),
           offset: Number(query?._offset ?? 0),
         },
