@@ -37,36 +37,51 @@ export function registerFindingsTools(server: McpServer, client: PolarisClient):
 
   server.tool(
     "polaris_get_issue",
-    "Get detailed information about a specific security issue",
+    "Get detailed information about a specific security issue. Requires projectId or applicationId",
     {
       issueId: z.string().describe("Issue ID"),
+      projectId: z.string().optional().describe("Project ID (required if applicationId not set)"),
+      applicationId: z.string().optional().describe("Application ID (required if projectId not set)"),
     },
     async (params) => {
-      const result = await client.get(`/api/findings/issues/${params.issueId}`);
+      const result = await client.get(`/api/findings/issues/${params.issueId}`, {
+        projectId: params.projectId,
+        applicationId: params.applicationId,
+      });
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
 
   server.tool(
     "polaris_get_triage_history",
-    "Get the triage/audit history for an issue — shows all status changes, dismissals, and assignments",
+    "Get the triage/audit history for an issue — shows all status changes, dismissals, and assignments. Requires projectId or applicationId",
     {
       issueId: z.string().describe("Issue ID"),
+      projectId: z.string().optional().describe("Project ID (required if applicationId not set)"),
+      applicationId: z.string().optional().describe("Application ID (required if projectId not set)"),
     },
     async (params) => {
-      const result = await client.get(`/api/findings/issues/${params.issueId}/triage-history`);
+      const result = await client.get(`/api/findings/issues/${params.issueId}/triage-history`, {
+        projectId: params.projectId,
+        applicationId: params.applicationId,
+      });
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
 
   server.tool(
     "polaris_get_detection_history",
-    "Get detection change history for an issue — shows when it was first/last detected and status transitions",
+    "Get detection change history for an issue — shows when it was first/last detected and status transitions. Requires projectId or applicationId",
     {
       issueId: z.string().describe("Issue ID"),
+      projectId: z.string().optional().describe("Project ID (required if applicationId not set)"),
+      applicationId: z.string().optional().describe("Application ID (required if projectId not set)"),
     },
     async (params) => {
-      const result = await client.get(`/api/findings/issues/${params.issueId}/detection-history`);
+      const result = await client.get(`/api/findings/issues/${params.issueId}/detection-history`, {
+        projectId: params.projectId,
+        applicationId: params.applicationId,
+      });
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
