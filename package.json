@@ -1,6 +1,6 @@
 {
   "name": "blackduck-polaris-mcp-server",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Feature-rich MCP server for Black Duck Polaris — trigger SAST/SCA/DAST scans, query findings, generate reports (SBOM, SPDX, CycloneDX), manage policies, triage issues, and more. Works with Claude Code, Claude Desktop, GitHub Copilot, Cursor, and any MCP-compatible AI tool.",
   "type": "module",
   "main": "build/index.js",

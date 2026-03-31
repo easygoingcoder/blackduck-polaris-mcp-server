@@ -15,15 +15,15 @@ export function registerReportsTools(server: McpServer, client: PolarisClient): 
 
   server.tool(
     "polaris_generate_report",
-    "Generate a report. Returns immediately with report ID — use polaris_get_report_status to poll. Supported types: developer-detail-sca, developer-detail-static, executive-summary, issue-overview, issue-summary, security-audit, sbom, spdx-v2.3, cyclonedx-v1.4, cyclonedx-v1.6, standard-compliance, standard-compliance-detail, test-summary, developer-detail-dynamic",
+    "Generate a report for specific branches. Returns report ID — poll with polaris_get_report_status. Report types: issues-report, developer-detail-sca, developer-detail-static, executive-summary, issue-overview, security-audit, sbom, spdx, cyclonedx, cyclonedx-v1.6, standard-compliance, standard-compliance-detail, test-summary, dast-detail-report, notices-file. Body must include applications array with nested projects/branches, plus severities, tools, format, scope, and filter fields.",
     {
-      reportType: z.string().describe("Report type slug (e.g. 'sbom', 'executive-summary', 'spdx-v2.3', 'cyclonedx-v1.6')"),
-      parameters: z.record(z.unknown()).describe("Report parameters — varies by type. Common: applicationIds, projectIds, branchIds, toolTypes, severities"),
+      reportType: z.string().describe("Report type slug (e.g. 'issues-report', 'executive-summary', 'spdx', 'cyclonedx-v1.6')"),
+      configuration: z.record(z.unknown()).describe("Report configuration object. Required fields: applications (array of {id, name, projects: [{id, name, branches: [{id, name, type: 'branch', isDefault: bool}]}]}), severities (e.g. ['critical','high']), tools (e.g. ['static_polaris','sca_package']), name, format ('pdf'|'csv'), scope ('SELECTED_BRANCHES'|'SELECTED_APPLICATIONS'), filter (e.g. 'id=in=(branchId1,branchId2)'), defaultBranchOnly (bool)"),
     },
     async (params) => {
-      const result = await client.post(
+      const result = await client.request("POST",
         `/api/insights/reports/${params.reportType}/_actions/run`,
-        params.parameters
+        { body: params.configuration }
       );
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }

@@ -59,6 +59,9 @@ export class PolarisClient {
     if (method === "POST" && path === "/api/tests") {
       return "application/vnd.polaris.tests.tests-bulk-create-1+json";
     }
+    if (method === "POST" && path.startsWith("/api/insights/reports/") && path.includes("/_actions/run")) {
+      return "application/vnd.polaris.insights.reports-2+json";
+    }
     return "application/json";
   }
 
@@ -75,11 +78,12 @@ export class PolarisClient {
       ["/api/ciam/openid-connect/userinfo", "application/vnd.polaris.auth.user-info-1+json"],
       ["/api/notification/organization-preferences", "application/vnd.polaris.notification.organization-preferences-1+json"],
       ["/api/notification/subscriptions", "application/vnd.polaris.notification.subscriptions-1+json"],
+      ["/api/insights/reports", "*/*"],
     ];
 
     for (const [prefix, mediaType] of mediaTypeMap) {
       if (path.startsWith(prefix)) {
-        return `${mediaType}, application/json`;
+        return mediaType === "*/*" ? "*/*" : `${mediaType}, application/json`;
       }
     }
 
