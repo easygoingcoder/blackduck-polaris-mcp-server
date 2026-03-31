@@ -48,7 +48,7 @@ export class PolarisClient {
     }
 
     const contentType = response.headers.get("content-type") || "";
-    if (contentType.includes("application/json")) {
+    if (contentType.includes("json")) {
       return (await response.json()) as T;
     }
 
