@@ -1,0 +1,8 @@
+src/
+e2e/
+.github/
+.gitignore
+tsconfig.json
+.env
+.env.*
+*.tsbuildinfo

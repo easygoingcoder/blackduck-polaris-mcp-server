@@ -1,0 +1,23 @@
+node_modules/
+build/
+*.tsbuildinfo
+
+# Local e2e tests — never commit
+e2e/
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# npm
+*.tgz

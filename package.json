@@ -1,0 +1,63 @@
+{
+  "name": "blackduck-polaris-mcp-server",
+  "version": "0.1.0",
+  "description": "Feature-rich MCP server for Black Duck Polaris — trigger SAST/SCA/DAST scans, query findings, generate reports (SBOM, SPDX, CycloneDX), manage policies, triage issues, and more. Works with Claude Code, Claude Desktop, GitHub Copilot, Cursor, and any MCP-compatible AI tool.",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "blackduck-polaris-mcp-server": "build/index.js"
+  },
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "test:e2e": "vitest run --config e2e/vitest.config.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "blackduck",
+    "black-duck",
+    "polaris",
+    "security",
+    "sast",
+    "sca",
+    "dast",
+    "vulnerability",
+    "security-scanning",
+    "appsec",
+    "application-security",
+    "sbom",
+    "spdx",
+    "cyclonedx",
+    "code-analysis",
+    "static-analysis",
+    "software-composition-analysis",
+    "devsecops",
+    "claude",
+    "claude-code",
+    "ai-tools",
+    "copilot"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.1.1"
+  }
+}
