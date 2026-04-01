@@ -39,18 +39,36 @@ claude mcp add blackduck-polaris -e POLARIS_URL=https://your-instance.polaris.bl
 }
 ```
 
-### Cursor / VS Code
-
-Add to your MCP settings:
+### VS Code (`.vscode/mcp.json`)
 
 ```json
 {
-  "blackduck-polaris": {
-    "command": "npx",
-    "args": ["blackduck-polaris-mcp-server"],
-    "env": {
-      "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
-      "POLARIS_API_TOKEN": "your-token"
+  "servers": {
+    "blackduck-polaris": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "blackduck-polaris-mcp-server"],
+      "env": {
+        "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
+        "POLARIS_API_TOKEN": "your-token"
+      }
+    }
+  }
+}
+```
+
+### Cursor (`.cursor/mcp.json` or `~/.cursor/mcp.json`)
+
+```json
+{
+  "mcpServers": {
+    "blackduck-polaris": {
+      "command": "npx",
+      "args": ["-y", "blackduck-polaris-mcp-server"],
+      "env": {
+        "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
+        "POLARIS_API_TOKEN": "your-token"
+      }
     }
   }
 }
