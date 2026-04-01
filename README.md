@@ -287,25 +287,6 @@ You: Export the first 3 to Jira
 AI: [calls polaris_export_issues_to_tracker] 3 issues exported to Jira
 ```
 
-## Comparison with Existing MCP Servers
-
-| Feature | This Server | mtgibbs/polaris-mcp | @black-duck/mcp-server |
-|---------|:-----------:|:-------------------:|:----------------------:|
-| Portfolio navigation | Full CRUD | Read only | - |
-| Issue querying | RSQL filters | Basic | - |
-| Issue triage | Dismiss/assign/severity | - | - |
-| AI remediation | Read + feedback | Read only | - |
-| **Trigger scans** | **SAST/SCA/DAST** | **-** | **Local only** |
-| **Report generation** | **14 types** | **-** | **-** |
-| **Report download** | **PDF/JSON/XML** | **-** | **-** |
-| **Policy management** | **Full CRUD** | **-** | **-** |
-| SCM integration | Full | - | - |
-| Bug tracker export | Jira/ADO | - | - |
-| Audit logs | Query + CSV export | - | - |
-| IAM | Users/groups/tokens | - | - |
-| Notifications | Preferences | - | - |
-| **Total tools** | **66** | **~10** | **~3** |
-
 ## Environment Variables
 
 | Variable | Required | Description |
