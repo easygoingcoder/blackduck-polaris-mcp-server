@@ -21,3 +21,6 @@ Thumbs.db
 
 # npm
 *.tgz
+
+# Local test payloads
+*-payload.json
