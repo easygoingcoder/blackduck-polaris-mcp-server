@@ -8,7 +8,7 @@ The most comprehensive MCP (Model Context Protocol) server for **Black Duck Pola
 
 ## Works With
 
-Claude Code | Claude Desktop | GitHub Copilot | Cursor | Windsurf | VS Code (MCP extensions) | any MCP-compatible AI tool
+Claude Code | Claude Desktop | GitHub Copilot | Copilot CLI | OpenCode | Cursor | Windsurf | VS Code (MCP extensions) | any MCP-compatible AI tool
 
 ## Quick Start
 
@@ -51,6 +51,55 @@ Add to your MCP settings:
     "env": {
       "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
       "POLARIS_API_TOKEN": "your-token"
+    }
+  }
+}
+```
+
+### GitHub Copilot CLI
+
+**Option 1 — Config file (`~/.copilot/mcp-config.json`):**
+
+```json
+{
+  "mcpServers": {
+    "blackduck-polaris": {
+      "type": "local",
+      "command": "npx",
+      "args": ["blackduck-polaris-mcp-server"],
+      "env": {
+        "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
+        "POLARIS_API_TOKEN": "your-token"
+      }
+    }
+  }
+}
+```
+
+**Option 2 — Inline for a single session:**
+
+```bash
+copilot --additional-mcp-config '{"blackduck-polaris":{"type":"local","command":"npx","args":["blackduck-polaris-mcp-server"],"env":{"POLARIS_URL":"https://your-instance.polaris.blackduck.com","POLARIS_API_TOKEN":"your-token"}}}'
+```
+
+### OpenCode
+
+**Option 1 — Interactive:** Run `opencode mcp add` and follow the prompts.
+
+**Option 2 — Config file (`~/.config/opencode/opencode.json` or `opencode.json` in project root):**
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "blackduck-polaris": {
+      "type": "local",
+      "enabled": true,
+      "command": ["npx", "-y", "blackduck-polaris-mcp-server"],
+      "environment": {
+        "POLARIS_URL": "https://your-instance.polaris.blackduck.com",
+        "POLARIS_API_TOKEN": "your-token"
+      }
     }
   }
 }
